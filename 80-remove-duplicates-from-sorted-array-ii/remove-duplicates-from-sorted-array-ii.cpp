@@ -1,16 +1,16 @@
 class Solution {
 public:
     int removeDuplicates(vector<int>& nums) {
-        unordered_map<int, int> freq;
-        int n = nums.size(), right = 0;
-
-        while(right < n){
-            freq[nums[right]]++;
-            if(freq[nums[right]] > 2){ 
-                nums.erase(nums.begin() + right);
-                right--; n--;}
-            right++;
+        int i =0;
+        // int ele= nums[0];
+        for(auto ele : nums)
+        {
+            if(i==0 || i==1 || nums[i-2] != ele)
+            {
+                nums[i] = ele;
+                i++;
+            }
         }
-        return n;
+    return i ;
     }
 };
