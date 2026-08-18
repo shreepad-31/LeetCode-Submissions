@@ -2,8 +2,10 @@ class Solution {
 public:
     vector<vector<int>> subsets(vector<int>& nums) {
         vector<vector<int>> ans; int n = nums.size();
-        for(int i = 0; i < pow(2, nums.size()); i++){
-            vector<int> subset; int temp = i, ind = 0;
+        ans.reserve(1 << n);
+        
+        for(int mask = 0; mask < (1 << n); mask++){
+            vector<int> subset; int temp = mask, ind = 0;
 
             while(temp){
                 if(temp & 1) subset.push_back(nums[ind]);
