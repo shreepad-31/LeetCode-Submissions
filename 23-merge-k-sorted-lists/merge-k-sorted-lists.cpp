@@ -11,37 +11,26 @@
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-        if(!lists.size()) return nullptr;
-        if(lists.size() == 1) return lists[0];
-
+        priority_queue<pair<int, int> , vector<pair<int, int>>, greater<pair<int, int>>> pq;
         ListNode* dummy = new ListNode(-1);
         ListNode* temp = dummy;
-        ListNode* pointer = nullptr;
 
-        while(lists.size() > 1){
-            int mini = INT_MAX, ind = -1;
-            for(int i = 0; i < lists.size(); i++){
-                if(lists[i] == nullptr) {lists.erase(lists.begin() + i); i--; continue;}
-                if(lists[i]->val < mini){
-                    pointer = lists[i];
-                    mini = lists[i]->val;
-                    ind = i;
-                }
-                
-            }
-            if(ind != -1){
-                lists[ind] = lists[ind]->next;
-                pointer->next = nullptr;
-                temp->next = pointer;
-                temp = temp->next;
-            }
-
+        for(int i = 0; i < lists.size(); i++){
+            if(lists[i]) pq.push({lists[i]->val, i});
         }
 
-        if(lists.size() == 1) temp->next = lists[0];
-        temp = dummy->next;
-        delete dummy;
+        while(!pq.empty()){
+            pair<int, int> sam = pq.top(); pq.pop();
 
-        return temp;
+            temp->next = lists[sam.second];
+            temp = temp->next;
+            lists[sam.second] = lists[sam.second]->next;
+
+            if(lists[sam.second]) pq.push({lists[sam.second]->val, sam.second});
+        }
+
+        ListNode* head = dummy->next;
+        delete dummy;
+        return head;
     }
 };
