@@ -1,10 +1,13 @@
 class Solution {
 public:
     int maxDistinct(string s) {
-        int arr[26] = {0};
-        int count = 0;
-        for(auto it : s){
-            if(arr[it - 'a'] == 0) {count++; arr[it - 'a'] = 1;}
+        int mask = 0, count = 0;
+        for(char it : s){
+            if(((mask >> (it - 'a')) & 1) == 0){
+                mask |= 1 << (it - 'a');
+                count++;
+                if(count == 26) break;
+            }
         }
         return count;
     }
